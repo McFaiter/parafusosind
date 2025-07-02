@@ -1,0 +1,292 @@
+/* ---- RESET E VARIÁVEIS GLOBAIS ---- */
+:root {
+    --bg-dark: #1a1c20;
+    --bg-light: #25282e;
+    --primary: #f0941f; /* Laranja */
+    --secondary: #009dff; /* Azul */
+    --text-light: #f0f0f0;
+    --text-dark: #a0a0a0;
+    --border-color: #3a3f4b;
+    --disabled-bg: #4b4b4b;
+    --disabled-text: #888;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* ---- CONTAINER PRINCIPAL ---- */
+.game-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--bg-light);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.game-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.game-header h1 {
+    font-size: 1.5em;
+    color: var(--primary);
+}
+
+/* ---- ÁREA DE CLIQUE E PONTUAÇÃO ---- */
+.main-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.score-panel h2 {
+    font-size: 4em;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.score-panel p {
+    font-size: 1.2em;
+    color: var(--text-dark);
+    margin-top: -5px;
+}
+
+.clicker-area {
+    margin: 20px 0;
+    position: relative;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ESTILO DO BOTÃO DE EMOJI */
+#botaoParafuso {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 100px; /* Tamanho do emoji */
+    line-height: 1;
+    transition: transform 0.1s ease;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+    padding: 0;
+    color: #cccccc; /* Cor base do emoji, pode não funcionar em todos os navegadores */
+}
+
+#botaoParafuso:active {
+    transform: scale(0.95);
+}
+
+/* CLASSE PARA ATIVAR ANIMAÇÃO DE PULSO */
+.animar {
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+
+.pps-panel {
+    font-size: 1em;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+/* ---- NÚMEROS FLUTUANTES ---- */
+#floating-numbers-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 150px;
+    pointer-events: none;
+}
+
+.floating-number {
+    position: absolute;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--text-light);
+    animation: float-up 1.5s ease-out forwards;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    user-select: none;
+}
+
+@keyframes float-up {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+}
+
+/* ESTILO PARA INFORMAÇÃO DE GANHO POR SEGUNDO NO CARD */
+.upgrade-pps {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-dark);
+    flex-grow: 1; /* Faz ocupar o espaço disponível */
+    text-align: right;
+    margin: 0 15px;
+    white-space: nowrap; /* Evita que o texto quebre linha */
+}
+
+.upgrade-pps .fa-bolt {
+    color: var(--secondary); /* Cor azul para o ícone */
+}
+
+/* ---- LOJA DE UPGRADES ---- */
+.store-area {
+    padding: 0 20px 20px 20px;
+}
+
+.upgrade-section {
+    margin-top: 25px;
+}
+
+.upgrade-section h3 {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    color: var(--text-light);
+    font-size: 1.2em;
+}
+
+.upgrades-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.upgrade-card {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.upgrade-card:hover {
+    background-color: #3c4048;
+}
+
+.upgrade-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.upgrade-icon {
+    font-size: 2em;
+}
+
+.upgrade-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.upgrade-name {
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+/* >>>>> NOVO ESTILO ADICIONADO AQUI <<<<< */
+.individual-pps {
+    font-size: 0.8em;
+    font-weight: 400;
+    color: var(--text-dark);
+    margin-left: 5px;
+}
+
+.upgrade-level {
+    font-size: 0.9em;
+    color: var(--text-dark);
+}
+
+.buy-button {
+    padding: 10px 15px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--primary);
+    color: var(--bg-dark);
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.buy-button:hover {
+    background-color: #ffad48;
+}
+
+.buy-button:active {
+    transform: scale(0.98);
+}
+
+.buy-button:disabled {
+    background-color: var(--disabled-bg);
+    color: var(--disabled-text);
+    cursor: not-allowed;
+}
+
+/* ---- OPÇÕES DE JOGO (SALVAR/CARREGAR) ---- */
+.game-options {
+    margin-top: 25px;
+}
+
+.game-options h3 {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    color: var(--text-light);
+    font-size: 1.2em;
+}
+
+.game-options button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    margin-right: 10px;
+    transition: background-color 0.2s;
+}
+
+.game-options button:hover {
+    background-color: var(--border-color);
+}

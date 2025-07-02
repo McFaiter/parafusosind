@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parafusos Ind. 2.0</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <header class="game-header">
+            <h1>Parafusos Ind. <i class="fa-solid fa-industry"></i></h1>
+        </header>
+
+        <main class="main-content">
+            <div class="score-panel">
+                <h2 id="contador">0</h2>
+                <p>parafusos</p>
+            </div>
+
+            <div class="clicker-area">
+                <div id="floating-numbers-container"></div>
+                <button id="botaoParafuso" onclick="clicarParafuso()">🔩</button>
+            </div>
+
+            <div id="geracaoPorSegundo" class="pps-panel">Gerando 0 parafusos por segundo</div>
+        </main>
+
+        <div class="store-area">
+            <div class="upgrade-section">
+                <h3><i class="fa-solid fa-arrow-up-from-bracket"></i> Bônus de Clique</h3>
+                <div class="upgrade-card" id="click-upgrade-card">
+                    <div class="upgrade-info">
+                        <span class="upgrade-icon">👆</span>
+                        <div class="upgrade-details">
+                            <span class="upgrade-name">Poder do Clique</span>
+                            <span class="upgrade-level">Nível <span id="qtdClique">1</span></span>
+                        </div>
+                    </div>
+                    <button class="buy-button" onclick="comprarClique()" id="botaoClique">
+                        Comprar por <span id="custoClique">10</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="upgrade-section">
+                <h3><i class="fa-solid fa-cogs"></i> Linha de Produção</h3>
+                <div id="upgradesContainer" class="upgrades-grid">
+                    </div>
+            </div>
+             <div class="game-options">
+                <h3><i class="fa-solid fa-floppy-disk"></i> Progresso</h3>
+                <button onclick="exportarProgresso()"><i class="fa-solid fa-download"></i> Exportar</button>
+                <input type="file" id="importarInput" style="display:none" accept="application/json" onchange="importarProgresso(event)" />
+                <button onclick="document.getElementById('importarInput').click()"><i class="fa-solid fa-upload"></i> Importar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
