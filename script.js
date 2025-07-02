@@ -2,6 +2,9 @@
 let parafusos = 0;
 let ganhoPorClique = 1;
 let custoClique = 10;
+// Novo estado para o AutoClick
+let autoClickLevel = 0;
+const autoClickCosts = [500, 7000, 75000, 1000000, 10000000];
 
 const upgradesData = [
     { key: "maquina", nome: "Máquina", custo: 10, ganho: 1, emoji: "⚙️" },
@@ -24,11 +27,18 @@ const geracaoPorSegundoSpan = document.getElementById("geracaoPorSegundo");
 const botaoParafuso = document.getElementById("botaoParafuso");
 const upgradesContainer = document.getElementById("upgradesContainer");
 const floatingNumbersContainer = document.getElementById("floating-numbers-container");
+const autoClickCursorsContainer = document.getElementById("autoclick-cursors-container");
 
 // Clique
 const qtdCliqueSpan = document.getElementById("qtdClique");
 const custoCliqueSpan = document.getElementById("custoClique");
 const botaoClique = document.getElementById("botaoClique");
+
+// AutoClick
+const qtdAutoClickSpan = document.getElementById("qtdAutoClick");
+const custoAutoClickSpan = document.getElementById("custoAutoClick");
+const botaoAutoClick = document.getElementById("botaoAutoClick");
+
 
 // ---- FUNÇÕES PRINCIPAIS DO JOGO ----
 function formatarNumero(num) {
@@ -74,6 +84,19 @@ function comprarClique() {
     }
 }
 
+// >>>>> NOVA FUNÇÃO DE COMPRA DO AUTOCLICK <<<<<
+function comprarAutoClick() {
+    if (autoClickLevel >= 5) return; // Limite máximo de 5
+
+    const custoAtual = autoClickCosts[autoClickLevel];
+    if (parafusos >= custoAtual) {
+        parafusos -= custoAtual;
+        autoClickLevel++;
+        criarCursorAutoClick(); // Cria o cursor visual
+        atualizarDisplay();
+    }
+}
+
 function calcularGanhoTotalPorSegundo() {
     let ganhoTotal = 0;
     for (const chave in upgrades) {
@@ -86,13 +109,25 @@ function calcularGanhoTotalPorSegundo() {
 function atualizarDisplay() {
     const ganhoTotal = calcularGanhoTotalPorSegundo();
     contadorSpan.textContent = formatarNumero(Math.floor(parafusos));
-
     geracaoPorSegundoSpan.textContent = `Gerando ${formatarNumero(ganhoTotal)} parafuso${ganhoTotal !== 1 ? "s" : ""} por segundo`;
 
+    // Atualiza bônus de clique
     qtdCliqueSpan.textContent = formatarNumero(ganhoPorClique);
     custoCliqueSpan.textContent = formatarNumero(Math.floor(custoClique));
     botaoClique.disabled = parafusos < Math.floor(custoClique);
 
+    // >>>>> ATUALIZA AUTOCLICK <<<<<
+    qtdAutoClickSpan.textContent = autoClickLevel;
+    if (autoClickLevel >= 5) {
+        custoAutoClickSpan.textContent = "MAX";
+        botaoAutoClick.disabled = true;
+    } else {
+        const custoAtual = autoClickCosts[autoClickLevel];
+        custoAutoClickSpan.textContent = formatarNumero(custoAtual);
+        botaoAutoClick.disabled = parafusos < custoAtual;
+    }
+
+    // Atualiza upgrades da linha de produção
     for (const chave in upgrades) {
         const item = upgrades[chave];
         const btn = document.getElementById(`botao_${chave}`);
@@ -130,13 +165,24 @@ function criarNumeroFlutuante(valor) {
     }, 1500);
 }
 
+// >>>>> NOVA FUNÇÃO PARA CRIAR OS CURSORES <<<<<
+function criarCursorAutoClick() {
+    autoClickCursorsContainer.innerHTML = ''; // Limpa cursores existentes
+    for (let i = 0; i < autoClickLevel; i++) {
+        const cursorEl = document.createElement('div');
+        cursorEl.className = 'autoclick-cursor';
+        cursorEl.id = `autoclick-cursor-${i}`;
+        // SVG de uma mão/cursor
+        cursorEl.innerHTML = `<svg viewBox="0 0 24 24"><path d="M9.5,2A1.5,1.5 0 0,0 8,3.5V11.78L4.13,9.63C3.74,9.44 3.28,9.53 3.09,9.92C2.9,10.31 2.97,10.77 3.36,10.96L8.5,14H8.5C8.5,14 8.5,14 8.5,14L10.25,14.5L10.75,14.75L11,15H15.5A2,2 0 0,0 17.5,13V8A2,2 0 0,0 15.5,6H13V3.5A1.5,1.5 0 0,0 11.5,2H9.5M9.5,3H11.5A0.5,0.5 0 0,1 12,3.5V7H15.5A1,1 0 0,1 16.5,8V13A1,1 0 0,1 15.5,14H11.5L9.25,13.38L4.11,10.86L8,12.78V3.5A0.5,0.5 0 0,1 8.5,3H9.5Z"></path></svg>`;
+        autoClickCursorsContainer.appendChild(cursorEl);
+    }
+}
+
 // ---- INICIALIZAÇÃO DO JOGO ----
 function criarCardsDeUpgrade() {
     upgradesData.forEach(item => {
         const card = document.createElement('div');
         card.className = 'upgrade-card';
-        // >>>>> ALTERAÇÃO PRINCIPAL AQUI <<<<<
-        // Adicionamos um <span> ao lado do nome do item com o ganho individual.
         card.innerHTML = `
             <div class="upgrade-info">
                 <span class="upgrade-icon">${item.emoji}</span>
@@ -157,11 +203,7 @@ function criarCardsDeUpgrade() {
 function inicializarEstado() {
     upgradesData.forEach(item => {
         upgrades[item.key] = {
-            nome: item.nome,
-            qtd: 0,
-            custo: item.custo,
-            ganho: item.ganho,
-            emoji: item.emoji,
+            nome: item.nome, qtd: 0, custo: item.custo, ganho: item.ganho, emoji: item.emoji,
         };
     });
     carregarProgresso();
@@ -169,7 +211,8 @@ function inicializarEstado() {
 
 // ---- PERSISTÊNCIA DE DADOS (SALVAR/CARREGAR) ----
 function salvarProgresso() {
-    const progresso = { parafusos, ganhoPorClique, custoClique, upgrades: {} };
+    // Adicionado 'autoClickLevel' ao progresso
+    const progresso = { parafusos, ganhoPorClique, custoClique, autoClickLevel, upgrades: {} };
     for (const chave in upgrades) {
         progresso.upgrades[chave] = {
             qtd: upgrades[chave].qtd,
@@ -185,6 +228,11 @@ function carregarProgresso() {
         parafusos = progressoSalvo.parafusos || 0;
         ganhoPorClique = progressoSalvo.ganhoPorClique || 1;
         custoClique = progressoSalvo.custoClique || 10;
+        // Carrega o nível do AutoClick
+        autoClickLevel = progressoSalvo.autoClickLevel || 0;
+        // Recria os cursores visuais ao carregar
+        criarCursorAutoClick(); 
+
         for (const chave in progressoSalvo.upgrades) {
             if (upgrades[chave]) {
                 upgrades[chave].qtd = progressoSalvo.upgrades[chave].qtd || 0;
@@ -224,6 +272,7 @@ function importarProgresso(event) {
 }
 
 // ---- LOOP PRINCIPAL DO JOGO ----
+// Loop para geração passiva (linha de produção)
 setInterval(() => {
     const ganhoTotal = calcularGanhoTotalPorSegundo();
     if (ganhoTotal > 0) {
@@ -232,6 +281,26 @@ setInterval(() => {
     }
 }, 100);
 
+// >>>>> NOVO LOOP PARA O AUTOCLICK <<<<<
+setInterval(() => {
+    if (autoClickLevel > 0) {
+        // Itera por cada cursor comprado
+        for (let i = 0; i < autoClickLevel; i++) {
+            // Adiciona um pequeno atraso para cada cursor não clicar ao mesmo tempo
+            setTimeout(() => {
+                parafusos += ganhoPorClique;
+                criarNumeroFlutuante(ganhoPorClique);
+                const cursorEl = document.getElementById(`autoclick-cursor-${i}`);
+                if (cursorEl) {
+                    cursorEl.classList.add('clicking');
+                    setTimeout(() => cursorEl.classList.remove('clicking'), 200);
+                }
+            }, i * 150); // Atraso de 150ms entre cada clique de cursor
+        }
+    }
+}, 1000); // Roda a cada segundo
+
+// Loop para atualização visual da UI
 setInterval(() => {
     atualizarDisplay();
 }, 1000);
