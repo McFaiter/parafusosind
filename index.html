@@ -27,7 +27,11 @@
 
             <div class="clicker-area">
                 <div id="floating-numbers-container"></div>
-                <button id="botaoParafuso" onclick="clicarParafuso()">🔩</button>
+                <div class="clicker-wrapper">
+                    <div id="autoclick-cursors-container">
+                        </div>
+                    <button id="botaoParafuso" onclick="clicarParafuso()">🔩</button>
+                </div>
             </div>
 
             <div id="geracaoPorSegundo" class="pps-panel">Gerando 0 parafusos por segundo</div>
@@ -35,7 +39,7 @@
 
         <div class="store-area">
             <div class="upgrade-section">
-                <h3><i class="fa-solid fa-arrow-up-from-bracket"></i> Bônus de Clique</h3>
+                <h3><i class="fa-solid fa-arrow-up-from-bracket"></i> Melhorias Manuais</h3>
                 <div class="upgrade-card" id="click-upgrade-card">
                     <div class="upgrade-info">
                         <span class="upgrade-icon">👆</span>
@@ -46,6 +50,18 @@
                     </div>
                     <button class="buy-button" onclick="comprarClique()" id="botaoClique">
                         Comprar por <span id="custoClique">10</span>
+                    </button>
+                </div>
+                <div class="upgrade-card" id="autoclick-upgrade-card">
+                    <div class="upgrade-info">
+                        <span class="upgrade-icon">🖱️</span>
+                        <div class="upgrade-details">
+                            <span class="upgrade-name">AutoClick</span>
+                            <span class="upgrade-level">Nível <span id="qtdAutoClick">0</span> / 5</span>
+                        </div>
+                    </div>
+                    <button class="buy-button" onclick="comprarAutoClick()" id="botaoAutoClick">
+                        Comprar por <span id="custoAutoClick">500</span>
                     </button>
                 </div>
             </div>
@@ -62,7 +78,6 @@
                 <button onclick="document.getElementById('importarInput').click()"><i class="fa-solid fa-upload"></i> Importar</button>
             </div>
         </div>
-
     </div>
 
     <script src="script.js"></script>
