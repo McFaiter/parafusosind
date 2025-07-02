@@ -79,24 +79,32 @@ body {
     align-items: center;
 }
 
+.clicker-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* ESTILO DO BOTÃO DE EMOJI */
 #botaoParafuso {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 100px; /* Tamanho do emoji */
+    font-size: 100px;
     line-height: 1;
     transition: transform 0.1s ease;
     filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
     padding: 0;
-    color: #cccccc; /* Cor base do emoji, pode não funcionar em todos os navegadores */
+    color: #cccccc;
+    position: relative;
+    z-index: 10; /* Para ficar na frente dos cursores */
 }
 
 #botaoParafuso:active {
     transform: scale(0.95);
 }
 
-/* CLASSE PARA ATIVAR ANIMAÇÃO DE PULSO */
 .animar {
     animation: pulse 0.3s ease-in-out;
 }
@@ -105,6 +113,46 @@ body {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
+}
+
+/* ---- ESTILOS DO AUTOCLICK ---- */
+#autoclick-cursors-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 1px;
+}
+
+.autoclick-cursor {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    transform-origin: 0 0; /* Ponto de rotação no canto superior esquerdo */
+    pointer-events: none; /* Para não interferir com o clique real */
+}
+
+.autoclick-cursor svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--text-light);
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+}
+
+/* Posicionamento em arco para cada cursor */
+.autoclick-cursor:nth-child(1) { transform: rotate(-60deg) translateY(-85px); }
+.autoclick-cursor:nth-child(2) { transform: rotate(-30deg) translateY(-85px); }
+.autoclick-cursor:nth-child(3) { transform: rotate(0deg) translateY(-85px); }
+.autoclick-cursor:nth-child(4) { transform: rotate(30deg) translateY(-85px); }
+.autoclick-cursor:nth-child(5) { transform: rotate(60deg) translateY(-85px); }
+
+/* Animação de clique do cursor */
+.autoclick-cursor.clicking {
+    animation: cursor-click 0.2s ease-in-out;
+}
+
+@keyframes cursor-click {
+    50% { transform: scale(0.9); }
 }
 
 
@@ -126,6 +174,7 @@ body {
     width: 100px;
     height: 150px;
     pointer-events: none;
+    z-index: 20;
 }
 
 .floating-number {
@@ -139,14 +188,8 @@ body {
 }
 
 @keyframes float-up {
-    0% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-100px);
-        opacity: 0;
-    }
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100px); opacity: 0; }
 }
 
 /* ESTILO PARA INFORMAÇÃO DE GANHO POR SEGUNDO NO CARD */
@@ -154,14 +197,14 @@ body {
     font-size: 0.9em;
     font-weight: 600;
     color: var(--text-dark);
-    flex-grow: 1; /* Faz ocupar o espaço disponível */
+    flex-grow: 1;
     text-align: right;
     margin: 0 15px;
-    white-space: nowrap; /* Evita que o texto quebre linha */
+    white-space: nowrap;
 }
 
 .upgrade-pps .fa-bolt {
-    color: var(--secondary); /* Cor azul para o ícone */
+    color: var(--secondary);
 }
 
 /* ---- LOJA DE UPGRADES ---- */
@@ -222,7 +265,6 @@ body {
     color: var(--text-light);
 }
 
-/* >>>>> NOVO ESTILO ADICIONADO AQUI <<<<< */
 .individual-pps {
     font-size: 0.8em;
     font-weight: 400;
