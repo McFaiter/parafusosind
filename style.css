@@ -98,7 +98,7 @@ body {
     padding: 0;
     color: #cccccc;
     position: relative;
-    z-index: 10; /* Para ficar na frente dos cursores */
+    z-index: 10; 
 }
 
 #botaoParafuso:active {
@@ -115,44 +115,34 @@ body {
     100% { transform: scale(1); }
 }
 
-/* ---- ESTILOS DO AUTOCLICK ---- */
+/* ---- ESTILOS DO AUTOCLICK ATUALIZADOS ---- */
 #autoclick-cursors-container {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1px;
-    height: 1px;
-}
-
-.autoclick-cursor {
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    transform-origin: 0 0; /* Ponto de rotação no canto superior esquerdo */
-    pointer-events: none; /* Para não interferir com o clique real */
-}
-
-.autoclick-cursor svg {
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    fill: var(--text-light);
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+    pointer-events: none;
 }
 
-/* Posicionamento em arco para cada cursor */
-.autoclick-cursor:nth-child(1) { transform: rotate(-60deg) translateY(-85px); }
-.autoclick-cursor:nth-child(2) { transform: rotate(-30deg) translateY(-85px); }
-.autoclick-cursor:nth-child(3) { transform: rotate(0deg) translateY(-85px); }
-.autoclick-cursor:nth-child(4) { transform: rotate(30deg) translateY(-85px); }
-.autoclick-cursor:nth-child(5) { transform: rotate(60deg) translateY(-85px); }
+.autoclick-emoji {
+    position: absolute;
+    font-size: 32px;
+    pointer-events: none;
+    user-select: none;
+    /* Efeito de deslize suave para a nova posição aleatória */
+    transition: top 0.5s ease-out, left 0.5s ease-out;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+    transform: translate(-50%, -50%); /* Centraliza o emoji na posição */
+}
 
 /* Animação de clique do cursor */
-.autoclick-cursor.clicking {
-    animation: cursor-click 0.2s ease-in-out;
+.autoclick-emoji.clicking {
+    animation: emoji-click 0.2s ease-in-out;
 }
 
-@keyframes cursor-click {
-    50% { transform: scale(0.9); }
+@keyframes emoji-click {
+    50% { transform: translate(-50%, -50%) scale(0.85); }
 }
 
 
